@@ -72,7 +72,7 @@ int main(void) {
 	Width = mode->width/1.2;
 	Height = mode->height/1.2;
 	//window = glfwCreateWindow(Width, Height, "Untitled Space Game", glfwGetPrimaryMonitor(), NULL);
-	window = glfwCreateWindow(Width, Height, "Joel's Platformer", NULL, NULL);
+	window = glfwCreateWindow(Width, Height, "Ludum Dare 42", NULL, NULL);
 	//Set window callback events
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, cursor_pos_callback);
