@@ -69,7 +69,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)include;$(ProjectDir)Libraries\include;$(ProjectDir)Libraries\OpenAL 1.1 SDK\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)Libraries\OpenAL 1.1 SDK\libs\Win32;$(ProjectDir)Libraries\libs;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -94,10 +97,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalUsingDirectories>%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Libraries\include;$(ProjectDir)Libraries\OpenAL 1.1 SDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(ProjectDir)Libraries\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;OpenAL32.lib;user32.lib;gdi32.lib;shell32.lib;vcruntime.lib;msvcrt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -115,7 +122,57 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="glad.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">G:\Ludum Dare\LD42\LD42\Libraries\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Driver.cpp" />
+    <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\Image.cpp" />
+    <ClCompile Include="src\InputManager.cpp" />
+    <ClCompile Include="src\ObjectRenderer.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\ResourceManager.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\Sound.cpp" />
+    <ClCompile Include="src\SoundEngine.cpp" />
+    <ClCompile Include="src\SpriteRenderer.cpp" />
+    <ClCompile Include="src\TextBox.cpp" />
+    <ClCompile Include="src\TextRenderer.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Button.h" />
+    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\Entity.h" />
+    <ClInclude Include="include\ft2build.h" />
+    <ClInclude Include="include\Game.h" />
+    <ClInclude Include="include\Image.h" />
+    <ClInclude Include="include\InputManager.h" />
+    <ClInclude Include="include\ObjectRenderer.h" />
+    <ClInclude Include="include\Player.h" />
+    <ClInclude Include="include\ResourceManager.h" />
+    <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\Sound.h" />
+    <ClInclude Include="include\SoundEngine.h" />
+    <ClInclude Include="include\SpriteRenderer.h" />
+    <ClInclude Include="include\stb_image.h" />
+    <ClInclude Include="include\TextBox.h" />
+    <ClInclude Include="include\TextRenderer.h" />
+    <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\WaveFile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\Image_Shader.fs" />
+    <None Include="shaders\Image_Shader.vs" />
+    <None Include="shaders\Rect_Shader.fs" />
+    <None Include="shaders\Rect_Shader.vs" />
+    <None Include="shaders\Sprite_Shader.fs" />
+    <None Include="shaders\Sprite_Shader.vs" />
+    <None Include="shaders\Text_Shader.fs" />
+    <None Include="shaders\Text_Shader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
