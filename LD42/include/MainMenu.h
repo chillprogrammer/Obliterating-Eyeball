@@ -14,9 +14,23 @@ struct MainMenu {
 	//Variables
 	bool visible;
 private:
+	TextRenderer * Text;
 	ObjectRenderer* Object;
 	SpriteRenderer* Sprite;
 	std::vector<Button*> Buttons;
 	GLFWwindow* window;
+
+	//The screen that pops up when you click the "How the Game Was Made" button.
+	struct Made_Menu {
+		void render();
+		Made_Menu(ObjectRenderer*, TextRenderer*);
+		~Made_Menu();
+		Button* Back;
+		bool visible;
+		ObjectRenderer* Object;
+		TextRenderer* Text;
+	};
+
+	Made_Menu * Made;
 };
 #endif
