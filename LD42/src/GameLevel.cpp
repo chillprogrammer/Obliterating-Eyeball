@@ -12,15 +12,15 @@ GameLevel::GameLevel(unsigned int level_id) {
 	}*/
 	switch (level_id) {
 	case 0:
-		Width = 35;
-		Height = 35;
+		Width = 55;
+		Height = 45;
 		for (unsigned int x = 0; x < Width; x++) {
 			std::vector<unsigned int> temp;
 			for (unsigned int y = 0; y < Height; y++) {
-				if (y < 5) {
+				if (y < 8) {
 					temp.push_back(4);
 				}
-				else if (y == 5) {
+				else if (y == 8) {
 					temp.push_back(1);
 				}
 				else {
@@ -41,20 +41,6 @@ GameLevel::GameLevel(unsigned int level_id) {
 			Grid.push_back(temp);
 		}
 	}
-	/*//Create Level 0
-	for (unsigned int x = 0; x < Width; x++) {
-		for (unsigned int y = 0; y < Height; y++) {
-			if (y < 5) {
-				Grid[x][y] = 2;
-			}
-			else if (y == 5) {
-				Grid[x][y] = 1;
-			}
-			else {
-				Grid[x][y] = 5;
-			}
-		}
-	}*/
 
 	Sprite = new SpriteRenderer("content/overworld.png");
 }

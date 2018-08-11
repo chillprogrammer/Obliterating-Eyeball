@@ -10,7 +10,7 @@ Game::Game(GLFWwindow* window, const int w, const int h) : driver(window), Width
 
 	//Center Camera with zoom (x1)
 	Camera::zoom(1.0f);
-	Camera::setPosition(glm::vec3(0.5f, 0.3f, 0.0f));
+	Camera::setPosition(glm::vec3(1.8f, 1.0f, 0.0f));
 
 	//Initialize Objects
 	Text = new TextRenderer();
@@ -21,7 +21,7 @@ Game::Game(GLFWwindow* window, const int w, const int h) : driver(window), Width
 	Levels.push_back(Lvl1);
 	Level = 0;
 
-	Menu = new MainMenu();
+	Menu = new MainMenu(window);
 }
 Game::~Game() {
 	//Clear Memory From Programs
@@ -109,16 +109,16 @@ void Game::update(float delta) {
 	}
 	//Move Player
 	if (InputManager::listContains(87)) {	//W
-		Camera::translateMatrix(glm::vec3(0.0f, -Camera::Speed, 0.0f));
+		Camera::translateCamera(glm::vec3(0.0f, Camera::Speed, 0.0f));
 	}
 	if (InputManager::listContains(83)) {	//S
-		Camera::translateMatrix(glm::vec3(0.0f, Camera::Speed, 0.0f));
+		Camera::translateCamera(glm::vec3(0.0f, -Camera::Speed, 0.0f));
 	}
 	if (InputManager::listContains(65)) { //A
-		Camera::translateMatrix(glm::vec3(Camera::Speed, 0.0f, 0.0f));
+		Camera::translateCamera(glm::vec3(-Camera::Speed, 0.0f, 0.0f));
 	}
 	if (InputManager::listContains(68)) { //D
-		Camera::translateMatrix(glm::vec3(-Camera::Speed, 0.0f, 0.0f));
+		Camera::translateCamera(glm::vec3(Camera::Speed, 0.0f, 0.0f));
 	}
 	//If the camera should lock onto the player
 	if(Camera::PLAYER_LOCK == GL_TRUE) {
@@ -126,4 +126,36 @@ void Game::update(float delta) {
 	}
 
 	Levels[Level]->update(delta);
+
+	// Makes the camera move around the map at the main menu
+	static glm::vec2 cam_velocity = glm::vec2(Camera::Speed, Camera::Speed / 2.5f);
+	if (Menu->visible) {
+		//Camera::translateMatrix(glm::vec3(-cam_velocity.x, -cam_velocity.y, 0.0f));
+		Camera::translateCamera(glm::vec3(cam_velocity.x, cam_velocity.y, 0.0f));
+		if (Camera::camera_pos.x > 3.5f) {
+			cam_velocity.x = -Camera::Speed;
+			Camera::setPosition(glm::vec3(3.5f, Camera::camera_pos.y, 0.0f));
+		}
+		else if (Camera::camera_pos.x < 1.0f) {
+			cam_velocity.x = Camera::Speed;
+			Camera::setPosition(glm::vec3(1.0f, Camera::camera_pos.y, 0.0f));
+		}
+		if (Camera::camera_pos.y > 2.2f) {
+			cam_velocity.y = -Camera::Speed;
+			Camera::setPosition(glm::vec3(Camera::camera_pos.y, 2.2f, 0.0f));
+		}
+		else if (Camera::camera_pos.y < 1.0f) {
+			cam_velocity.y = Camera::Speed;
+			Camera::setPosition(glm::vec3(Camera::camera_pos.y, 1.0f, 0.0f));
+		}
+	}
+	//printf("Camera Pos = vec2(%f, %f)\n", Camera::camera_pos.x, Camera::camera_pos.y);
+
+	//Prevents the Camera from going off the map
+	if (Camera::camera_pos.x > 4.5f) {
+		Camera::setPosition(glm::vec3(4.5f, Camera::camera_pos.y, 0.0f));
+	}
+	else if (Camera::camera_pos.x < 1.0f) {
+		Camera::setPosition(glm::vec3(1.0f, Camera::camera_pos.y, 0.0f));
+	}
 }

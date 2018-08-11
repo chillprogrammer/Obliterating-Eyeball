@@ -43,8 +43,6 @@ void Button::render() {
 		else {
 			Pressed = false;
 		}
-		if (Pressed)
-			printf("Clicked %s\n", Text.c_str());
 		if (context_button == true) {
 			scalex /= 5.5f;
 			Text_Renderer->render(Text, posx + scalex / 4.5f, posy - 0.01f, scalex / 2.0f, scaley, textColor, 0.0f);

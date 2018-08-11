@@ -128,7 +128,8 @@ void SoundEngine::playSound(const ALchar* path, glm::vec2 pos, ALboolean loop) {
 	}
 	if (!sound_exists) {
 		Sound* sound = loadSound(path, nullptr);
-		playSound(sound->path, pos, loop);
+		if(sound != nullptr)
+			playSound(sound->path, pos, loop);
 	}
 }
 void SoundEngine::pauseSound(const ALchar* path) {

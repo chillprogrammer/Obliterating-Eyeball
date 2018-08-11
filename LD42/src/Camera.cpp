@@ -18,8 +18,12 @@ void Camera::resetMatrix() {
 void Camera::translateMatrix(glm::vec3 v) {
 	Projection = glm::translate(Projection, v*Delta);
 }
+void Camera::translateCamera(glm::vec3 v) {
+	Projection = glm::translate(Projection, -v*Delta);
+
+	camera_pos += glm::vec2(v.x, v.y)*Delta;
+}
 void Camera::setPosition(glm::vec3 v) {
-	v.y += 0.5f;
 	Projection = glm::mat4(1);
 	Projection = glm::scale(Projection, glm::vec3(zoom_amount, zoom_amount, 1.0f));
 	Projection = glm::translate(Projection, -v);

@@ -13,6 +13,7 @@ class Camera {
 public:
 	static void setMat4(glm::mat4);
 	static void translateMatrix(glm::vec3);
+	static void translateCamera(glm::vec3);
 	static void setPosition(glm::vec3);
 	static void rotateMatrix(GLfloat);
 	static void setSpeed(GLfloat);
