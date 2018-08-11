@@ -133,6 +133,7 @@
     <ClCompile Include="src\GameLevel.cpp" />
     <ClCompile Include="src\Image.cpp" />
     <ClCompile Include="src\InputManager.cpp" />
+    <ClCompile Include="src\MainMenu.cpp" />
     <ClCompile Include="src\ObjectRenderer.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\ResourceManager.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="include\GameLevel.h" />
     <ClInclude Include="include\Image.h" />
     <ClInclude Include="include\InputManager.h" />
+    <ClInclude Include="include\MainMenu.h" />
     <ClInclude Include="include\ObjectRenderer.h" />
     <ClInclude Include="include\Player.h" />
     <ClInclude Include="include\ResourceManager.h" />

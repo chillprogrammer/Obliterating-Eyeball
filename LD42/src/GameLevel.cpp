@@ -2,9 +2,6 @@
 #include "ResourceManager.h"
 
 GameLevel::GameLevel(unsigned int level_id) {
-	Width = 2;
-	Height = 2;
-
 	/*//Initialize the 2D array (Grid for the tile-based map)
 	for (unsigned int x = 0; x < Width; x++) {
 		std::vector<unsigned int> temp;
@@ -13,21 +10,33 @@ GameLevel::GameLevel(unsigned int level_id) {
 		}
 		Grid.push_back(temp);
 	}*/
-	if (level_id == 0) {
+	switch (level_id) {
+	case 0:
 		Width = 35;
 		Height = 35;
 		for (unsigned int x = 0; x < Width; x++) {
 			std::vector<unsigned int> temp;
 			for (unsigned int y = 0; y < Height; y++) {
 				if (y < 5) {
-					temp.push_back(2);
+					temp.push_back(4);
 				}
 				else if (y == 5) {
 					temp.push_back(1);
 				}
 				else {
-					temp.push_back(5);
+					temp.push_back(20);
 				}
+			}
+			Grid.push_back(temp);
+		}
+		break;
+	default:
+		Width = 2;
+		Height = 2;
+		for (unsigned int x = 0; x < Width; x++) {
+			std::vector<unsigned int> temp;
+			for (unsigned int y = 0; y < Height; y++) {
+				temp.push_back(0);
 			}
 			Grid.push_back(temp);
 		}
@@ -59,7 +68,7 @@ void GameLevel::render() {
 	GLfloat tile_scale = 0.1f;
 	for (unsigned int x = 0; x < Width; x++) {
 		for (unsigned int y = 0; y < Height; y++) {
-			Sprite->render("content/overworld.png", Grid[x][y], x*tile_scale, y*tile_scale, 0.1f, 0.1f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f, true);
+			Sprite->render("content/overworld.png", Grid[x][y], x*tile_scale, y*tile_scale*1.7777f, 0.1f, 0.1f*1.7777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f, true);
 		}
 	}
 }

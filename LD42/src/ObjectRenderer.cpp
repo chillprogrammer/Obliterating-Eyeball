@@ -55,7 +55,7 @@ void ObjectRenderer::render(Button* but) {
 		ResourceManager::bindShader("Rectangle");
 		glBindVertexArray(VAO);
 		ResourceManager::setUniformMat4("Rectangle", this->model, "model");
-		if (InputManager::MouseX > but->posx && InputManager::MouseX <but->posx + but->scalex && InputManager::MouseY > but->posy - but->scaley && InputManager::MouseY < but->posy) {
+		if (but->Hovered == true) {
 			ResourceManager::setUniformVec3("Rectangle", but->hoverColor, "backColor");
 		}
 		else

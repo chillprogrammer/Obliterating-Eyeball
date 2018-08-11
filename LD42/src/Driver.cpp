@@ -34,7 +34,7 @@ static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	Width = width;
 	Height = (int)(width/1.777f);
 	game->resize(width, Height);
-	glViewport(0, 0, width, width);
+	glViewport(0, 0, width, Height);
 	glfwSetWindowSize(window, Width, Height);
 }
 static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
@@ -68,8 +68,8 @@ int main(void) {
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 	//Width = mode->width;
 	//Height = mode->height;
-	Width = mode->width/1.2;
-	Height = mode->height/1.2;
+	Width = mode->width/1.5;
+	Height = mode->height/1.5;
 	//window = glfwCreateWindow(Width, Height, "Untitled Space Game", glfwGetPrimaryMonitor(), NULL);
 	window = glfwCreateWindow(Width, Height, "Ludum Dare 42", NULL, NULL);
 	//Set window callback events
@@ -97,7 +97,7 @@ int main(void) {
 	// Enable OpenGL Tansparancy Capabilities.
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glViewport(0, 0, Width, Width);
+	glViewport(0, 0, Width, Height);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);	//Wireframe Mode
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);	//Texture Mode
 	//////////////////////////////////////////

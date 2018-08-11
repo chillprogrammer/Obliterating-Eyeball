@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include "SoundEngine.h"
 #include "GameLevel.h"
+#include "MainMenu.h"
 
 class Game
 {
@@ -34,7 +35,7 @@ public:
 private:
 	int Width, Height;
 	unsigned int Area;
-
+	MainMenu* Menu;
 	std::vector<GameLevel*> Levels;
 	unsigned int Level;
 	TextRenderer* Text;

@@ -12,7 +12,7 @@ public:
 	TextRenderer *Text_Renderer;
 	std::string Text;
 	std::string Shortcut;
-	GLboolean Clicked, Visible, context_button, is_active;
+	bool Pressed, Visible, Hovered, context_button, is_active;
 	glm::vec3 backColor;
 	glm::vec3 borderColor;
 	glm::vec3 hoverColor;

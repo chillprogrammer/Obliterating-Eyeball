@@ -20,12 +20,15 @@ Game::Game(GLFWwindow* window, const int w, const int h) : driver(window), Width
 	GameLevel* Lvl1 = new GameLevel(0);
 	Levels.push_back(Lvl1);
 	Level = 0;
+
+	Menu = new MainMenu();
 }
 Game::~Game() {
-	//Clear Programs
+	//Clear Memory From Programs
 	SoundEngine::Revert();
 	ResourceManager::Revert();
 	//Delete Objects
+	delete Menu;
 	delete Text;
 	delete Object;
 	for (unsigned int i = 0; i < Levels.size(); i++) {
@@ -55,8 +58,13 @@ void Game::render() {
 	//Render the selected level
 	Levels[Level]->render();
 
+	//Render Main Menu
+	if (Menu->visible) {
+		Menu->render();
+	}
+
 	//Show FPS
-	Text->render("FPS: " + std::to_string(FPS), -0.95f, 0.1f, 0.1f, 0.1 / 1.777f, glm::vec3(0.8f, 0.8f, 0.8f), 0.0f);
+	Text->render("FPS: " + std::to_string(FPS), -0.95f, 0.95f, 0.1f, 0.2 / 1.777f, glm::vec3(0.8f, 0.8f, 0.8f), 0.0f);
 
 	//Refresh the Sound Program - memory gets deallocated from buffers when it is not used anymore.
 	SoundEngine::Refresh();

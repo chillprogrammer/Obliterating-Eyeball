@@ -1,40 +1,51 @@
 #include "Button.h"
 
-Button::Button() : Text("NULL"), Shortcut("NULL"), Clicked(GL_FALSE), Visible(GL_FALSE) {
+Button::Button() : Text("NULL"), Shortcut("NULL"), Pressed(false), Visible(true) {
 	Text_Renderer = new TextRenderer();
-	context_button = GL_FALSE;
+	context_button = false;
 	hoverColor = glm::vec3(0.5f, 0.5f, 0.5f);
-	is_active = GL_FALSE;
+	is_active = false;
+	Hovered = false;
 }
-Button::Button(const GLchar* text, const GLchar* shortcut) : Text(text), Shortcut(shortcut), Clicked(GL_FALSE), Visible(GL_FALSE) {
+Button::Button(const GLchar* text, const GLchar* shortcut) : Text(text), Shortcut(shortcut), Pressed(false), Visible(false) {
 	Text_Renderer = new TextRenderer();
-	context_button = GL_FALSE;
+	context_button = false;
 	hoverColor = glm::vec3(0.5f, 0.5f, 0.5f);
-	is_active = GL_FALSE;
+	is_active = false;
+	Hovered = false;
 }
-Button::Button(const GLchar* text) : Text(text), Shortcut("NULL"), Clicked(GL_FALSE), Visible(GL_FALSE) {
+Button::Button(const GLchar* text) : Text(text), Shortcut("NULL"), Pressed(false), Visible(true) {
 	Text_Renderer = new TextRenderer();
-	context_button = GL_FALSE;
+	context_button = false;
 	hoverColor = glm::vec3(0.5f, 0.5f, 0.5f);
-	is_active = GL_FALSE;
+	is_active = false;
+	Hovered = false;
 }
 Button::~Button() {
-	if (Text_Renderer)
-		delete Text_Renderer;
+	delete Text_Renderer;
 }
 void Button::render() {
-	if (Visible == GL_TRUE) {
+	if (Visible == true) {
+		if (InputManager::MouseX > posx - scalex && InputManager::MouseX < posx + scalex && InputManager::MouseY > posy - scaley && InputManager::MouseY < posy +scaley) {
+			Hovered = true;
+		}
+		else {
+			Hovered = false;
+		}
 		if (InputManager::LeftClicked) {
-			if (InputManager::MouseX > posx && InputManager::MouseX < posx + scalex && InputManager::MouseY > posy - scaley && InputManager::MouseY < posy) {
-				Clicked = GL_TRUE;
+			if (Hovered == true) {
+				Pressed = true;
 			}
 			else {
-				Clicked = GL_FALSE;
+				Pressed = false;
 			}
 		}
-		if (Clicked)
+		else {
+			Pressed = false;
+		}
+		if (Pressed)
 			printf("Clicked %s\n", Text.c_str());
-		if (context_button == GL_TRUE) {
+		if (context_button == true) {
 			scalex /= 5.5f;
 			Text_Renderer->render(Text, posx + scalex / 4.5f, posy - 0.01f, scalex / 2.0f, scaley, textColor, 0.0f);
 			if (Shortcut != "NULL") {
@@ -42,8 +53,9 @@ void Button::render() {
 			}
 		}
 		else {
-			GLfloat text_scale_x = 4*scalex / (Text.length()+2);
-			Text_Renderer->render(Text, posx + text_scale_x/4, posy - scaley/4, text_scale_x, scaley, textColor, 0.0f);
+			//GLfloat text_scale_x = 4*scalex / (Text.length()+2);
+			float text_scale_x = 8*scalex / (Text.length()+2);
+			Text_Renderer->render(Text, posx - scalex + text_scale_x/4, posy + scaley/2, text_scale_x, scaley*2, textColor, 0.0f);
 		}
 	}
 }
