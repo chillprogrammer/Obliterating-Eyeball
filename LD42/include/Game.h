@@ -13,6 +13,7 @@
 #include "Player.h"
 #include <stdio.h>
 #include "SoundEngine.h"
+#include "GameLevel.h"
 
 class Game
 {
@@ -34,7 +35,8 @@ private:
 	int Width, Height;
 	unsigned int Area;
 
-	//std::vector<GameLevel*> Levels;
+	std::vector<GameLevel*> Levels;
+	unsigned int Level;
 	TextRenderer* Text;
 	ObjectRenderer* Object;
 	GLFWwindow* driver;

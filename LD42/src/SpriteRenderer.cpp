@@ -3,9 +3,8 @@
 #include "Camera.h"
 
 SpriteRenderer::SpriteRenderer(const char* texture_path) {
-	TILEMAP_WIDTH = 16.0f;
-	TILEMAP_HEIGHT = 16.0f;
-
+	tileDimensions.x = 5.0f;
+	tileDimensions.y = 5.0f;
 	//If Texture/Shader doesn't already exist in memory, then load it up
 	if (ResourceManager::getShaderID("Sprite") == 0)
 		ResourceManager::loadShader("shaders/Sprite_Shader.vs", "shaders/Sprite_Shader.fs", "Sprite");
@@ -54,20 +53,40 @@ SpriteRenderer::~SpriteRenderer() {
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
 }
-void SpriteRenderer::setAppropriateTile(const char* texture_caller, const GLuint id) {
-	if (strcmp(texture_caller, "Overworld") == 0) {
-		this->tileDimensions = glm::vec2(TILEMAP_WIDTH, TILEMAP_HEIGHT);
+int SpriteRenderer::setAppropriateTile(const char* texture_caller, const GLuint id) {
+	/*if (!strcmp(texture_caller, "Overworld")) {
 		size_t index = 1;
 		for (size_t row = 0; row < tileDimensions.y; row++) {
 			for (size_t col = 0; col < tileDimensions.x; col++) {
-				if (index == id)
+				if (index == id) {
 					tilePosition = glm::vec2((GLfloat)col, (GLfloat)(tileDimensions.y - row - 1));
+					break;
+				}
 				index++;
 			}
 		}
+	}*/
+	this->tilePosition.x = 0.0f;
+	this->tilePosition.y = 0.0f;
+	unsigned int index = 0;
+	for (unsigned int row = 0; row < tileDimensions.y; row++) {
+		for (unsigned int col = 0; col < tileDimensions.x; col++) {
+			if (id == index) {
+				//printf("Returning id=%d\n", id);
+				return id;
+			}
+			index++;
+			tilePosition.x++;
+			if (index % (unsigned int)tileDimensions.x == 0) {
+				tilePosition.y++;
+				tilePosition.x = 0.0f;
+			}
+		}
 	}
+	//Should never reach this line
+	return -1;
 }
-void SpriteRenderer::render(const char* texture_caller, const GLuint object_id, GLfloat posx, GLfloat posy, GLfloat scalex, GLfloat scaley, glm::vec3 color, GLfloat rotation, bool is_world) {
+void SpriteRenderer::render(const char* texture_caller, const unsigned object_id, GLfloat posx, GLfloat posy, GLfloat scalex, GLfloat scaley, glm::vec3 color, GLfloat rotation, bool is_world) {
 	this->model = glm::rotate(glm::mat4(1), glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
 	this->model = glm::translate(model, glm::vec3(posx, posy, 0.0f));
 	

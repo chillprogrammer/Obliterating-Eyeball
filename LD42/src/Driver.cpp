@@ -48,7 +48,6 @@ static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) 
 }
 static void character_callback(GLFWwindow* window, unsigned int codepoint) {
 	game->character_callback(window, codepoint);
-	//printf("Keypressed=%c\n", (char)codepoint);
 }
 int main(void) {
 	srand(time(NULL));

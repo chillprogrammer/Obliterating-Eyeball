@@ -10,12 +10,16 @@ Game::Game(GLFWwindow* window, const int w, const int h) : driver(window), Width
 
 	//Center Camera with zoom (x1)
 	Camera::zoom(1.0f);
-	Camera::setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	Camera::setPosition(glm::vec3(0.5f, 0.3f, 0.0f));
 
 	//Initialize Objects
 	Text = new TextRenderer();
 	Object = new ObjectRenderer();
 	Camera::PLAYER_LOCK = false;
+
+	GameLevel* Lvl1 = new GameLevel(0);
+	Levels.push_back(Lvl1);
+	Level = 0;
 }
 Game::~Game() {
 	//Clear Programs
@@ -24,6 +28,9 @@ Game::~Game() {
 	//Delete Objects
 	delete Text;
 	delete Object;
+	for (unsigned int i = 0; i < Levels.size(); i++) {
+		delete Levels[i];
+	}
 }
 void Game::resize(int w, int h) {
 	this->Width = w;
@@ -45,10 +52,13 @@ void Game::scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 
 }
 void Game::render() {
+	//Render the selected level
+	Levels[Level]->render();
+
 	//Show FPS
 	Text->render("FPS: " + std::to_string(FPS), -0.95f, 0.1f, 0.1f, 0.1 / 1.777f, glm::vec3(0.8f, 0.8f, 0.8f), 0.0f);
 
-	//Refresh the Sound Engine - memory gets deallocated from buffers when it is not used anymore.
+	//Refresh the Sound Program - memory gets deallocated from buffers when it is not used anymore.
 	SoundEngine::Refresh();
 }
 void Game::mouseMoved(float xpos, float ypos) {
@@ -83,21 +93,29 @@ void Game::update(float delta) {
 	if (InputManager::listContains(262)) { //Right Arrow
 
 	}
+	if (InputManager::listContains(340) || InputManager::listContains(344)) {	//Shift Keys
+		Camera::Speed = Camera::DEFAULT_SPEED*2.0f;
+	}
+	else {
+		Camera::Speed = Camera::DEFAULT_SPEED;
+	}
 	//Move Player
 	if (InputManager::listContains(87)) {	//W
-		
+		Camera::translateMatrix(glm::vec3(0.0f, -Camera::Speed, 0.0f));
 	}
 	if (InputManager::listContains(83)) {	//S
-		
+		Camera::translateMatrix(glm::vec3(0.0f, Camera::Speed, 0.0f));
 	}
 	if (InputManager::listContains(65)) { //A
-		
+		Camera::translateMatrix(glm::vec3(Camera::Speed, 0.0f, 0.0f));
 	}
 	if (InputManager::listContains(68)) { //D
-		
+		Camera::translateMatrix(glm::vec3(-Camera::Speed, 0.0f, 0.0f));
 	}
 	//If the camera should lock onto the player
 	if(Camera::PLAYER_LOCK == GL_TRUE) {
 		//Camera::setPosition(glm::vec3(player->getPos().x, player->getPos().y, 0.0f));
 	}
+
+	Levels[Level]->update(delta);
 }

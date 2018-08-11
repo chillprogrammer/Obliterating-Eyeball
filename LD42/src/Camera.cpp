@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 glm::mat4 Camera::Projection = glm::mat4(1);
-GLfloat Camera::DEFAULT_SPEED = 0.5f;
+GLfloat Camera::DEFAULT_SPEED = 0.2f;
 GLfloat Camera::Speed = DEFAULT_SPEED;
 GLfloat Camera::Delta = 0.0f;
 GLboolean Camera::PLAYER_LOCK = GL_FALSE;
