@@ -213,11 +213,15 @@ void GameLevel::update(float delta) {
 void GameLevel::render() {
 	static bool jumping = true;
 	GLfloat tile_scale = 0.1f;
+	if ((InputManager::State == PAUSED || InputManager::State == MENU) && Guy->getPos().y < 4 * tile_scale*1.7777f) {
+		Guy->setPosition(1.455f, 1.8f);
+	}
 	//Player Fell Off
 	if(InputManager::State == PLAYING) {
 		if (Guy->getPos().y < 4 * tile_scale*1.7777f) {
 			InputManager::State = DIED;
 			Camera::PLAYER_LOCK = false;
+			Eyeball->attacking = false;
 			SoundEngine::stopSound("sounds/game-song.wav");
 			SoundEngine::playSound("sounds/menu-theme.wav", glm::vec2(0.0f, 0.0f), true);
 		}

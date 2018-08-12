@@ -161,7 +161,7 @@ void SoundEngine::Refresh() {
 		ALenum source_state = 0;
 		alGetSourcei(SoundList[i]->source, AL_SOURCE_STATE, &source_state);
 		if(source_state != AL_PLAYING && SoundList[i]->copy == AL_TRUE) {
-			printf("Deallocating memory from sound copy: %s\n", SoundList[i]->path);
+			//printf("Deallocating memory from sound copy: %s\n", SoundList[i]->path);
 			delete SoundList[i];
 			SoundList.erase(SoundList.begin() + i);
 		}

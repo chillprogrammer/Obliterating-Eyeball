@@ -147,7 +147,7 @@ void MainMenu::render() {
 			}
 			paused_blink = 0.0f;
 		}
-		Text->render("<Paused>", -0.20f, 0.5f, 0.2f, 0.2*1.777f, pause_color, 0.0f);
+		Text->render("<Paused>", -0.20f, 0.65f, 0.2f, 0.2*1.777f, pause_color, 0.0f);
 	}
 
 	//Render Goal
@@ -162,6 +162,7 @@ void MainMenu::render() {
 	Text->render("D = Move Right", 0.30f, 0.0f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
 	Text->render("W or SPACE = Jump", 0.30f, -0.15f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
 	Text->render("LEFT CLICK = Place Bridge Pieces", 0.18f, -0.30f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
+	Text->render("ESCAPE = Pause Game", 0.30f, -0.45f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
 }
 //The screen that pops up when you click the "How the Game Was Made" button.
 MainMenu::Made_Menu::Made_Menu(ObjectRenderer* O, TextRenderer* T) {

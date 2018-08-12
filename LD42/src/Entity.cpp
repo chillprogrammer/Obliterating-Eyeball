@@ -54,6 +54,7 @@ glm::vec2 Entity::getScale() {
 GLfloat Entity::getAng() { return angle; }
 void Entity::update(float d) {
 	delta = d;
-	translatePosition(velocity.x*delta, velocity.y*delta);
+	if(InputManager::State != PAUSED)
+		translatePosition(velocity.x*delta, velocity.y*delta);
 }
 void Entity::render() {} //Virtual Void

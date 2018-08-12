@@ -5,8 +5,8 @@ Player::Player(const char* img) : Entity(img) {
 		ResourceManager::loadShader("shaders/Player.vs", "shaders/Player.fs", "Player");
 	health = 100.0f;
 	velocity.y = 0.0f;
-	pos.x = 1.51f;
-	pos.y = 1.5f;
+	pos.x = 1.455f;
+	pos.y = 1.8f;
 	scale.x = 0.05f;
 	scale.y = 0.1*1.777f;
 	shader_caller = "Player";
