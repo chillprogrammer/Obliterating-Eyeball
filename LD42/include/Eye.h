@@ -8,5 +8,6 @@ public:
 	void updateEye(float delta);
 	void render();
 private:
+	float fire_counter;
 };
 #endif;

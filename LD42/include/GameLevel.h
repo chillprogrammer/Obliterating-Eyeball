@@ -22,6 +22,6 @@ private:
 	SpriteRenderer* Sprite;
 	ObjectRenderer* Object;
 	//Entities
-	Entity* Eyeball, *Guy;
+	Entity* Eyeball, *Guy, *Projectile;
 };
 #endif

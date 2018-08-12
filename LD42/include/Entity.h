@@ -36,6 +36,7 @@ public:
 
 	//Player specific variables
 	GLfloat animation_frame, total_animation_frames;
+	bool attacking;
 protected:
 	glm::vec2 pos, scale, velocity;
 	GLfloat delta, angle; //In Degrees

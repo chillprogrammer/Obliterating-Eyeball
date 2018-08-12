@@ -13,12 +13,19 @@ Eye::Eye(const char* img_path) : Entity(img_path) {
 	pupil_pos = glm::vec2(0.5f, 0.5f);
 	pupil_scale = glm::vec2(0.15f, 0.15f);
 	velocity.y = -0.1f;
+	attacking = false;
 }
 Eye::~Eye() {
 
 }
 void Eye::updateEye(float d) {
-
+	if (InputManager::State == PLAYING) {
+		fire_counter += 1.0f*d;
+		if (fire_counter > 3.0f) {
+			attacking = true;
+			fire_counter = 0.0f;
+		}
+	}
 }
 void Eye::render() {
 

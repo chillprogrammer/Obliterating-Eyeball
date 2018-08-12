@@ -3,10 +3,11 @@
 Entity::Entity(const char* img_path) {
 	visible = true;
 	angle = 0.0f;
-	pos.x = 0.01f;
-	pos.y = -0.44f;
-	scale.x = 0.06f;
-	scale.y = 0.06f;
+	health = 100.0f;
+	pos.x = 1.95f;
+	pos.y = 2.0f;
+	scale.x = 0.05f;
+	scale.y = 0.05*1.777f;
 	velocity.x = 0;
 	velocity.y = 0;
 	color = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -18,6 +19,7 @@ Entity::Entity(const char* img_path) {
 	animation_frame = 0.0f;
 	total_animation_frames = 1.0f;
 	GRAVITY = -0.0025f;
+	attacking = false;
 }
 Entity::~Entity() {
 	//printf("Testing Destruction of ENTITY\n");

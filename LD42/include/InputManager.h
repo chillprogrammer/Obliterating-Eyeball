@@ -2,7 +2,7 @@
 #define INPUTMANAGER_H
 #include <glad/glad.h>
 #include <vector>
-enum GameState { MENU, PLAYING, PAUSED };
+enum GameState { MENU, PLAYING, PAUSED, DIED};
 struct InputManager {
 	static double MouseX, MouseY;
 	static bool LeftClicked, RightClicked, Menu_Open;

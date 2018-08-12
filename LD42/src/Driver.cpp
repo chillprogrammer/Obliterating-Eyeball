@@ -31,9 +31,9 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	Width = width;
 	Height = height;
-	game->resize(width, height);
+	//game->resize(width, height);
 	glViewport(0, 0, width, height);
-	glfwSetWindowSize(window, width, height);
+	//glfwSetWindowSize(window, width, height);
 }
 static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos) {
 	game->mouseMoved(2.0f*(GLfloat)xpos / Width - 1.0f, -2.0f*(GLfloat)ypos / Height + 1.0f);

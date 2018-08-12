@@ -5,12 +5,16 @@
 GameLevel::GameLevel(unsigned int level_id) {
 	//Default Entity Uninitialized
 	Eyeball = nullptr;
-	Guy = nullptr;				//Note: the bridge spans left-to-right on y = 6 and y = 7.
+	Guy = nullptr;
+	Projectile = nullptr;
 
 	switch (level_id) {
 	case 0:
 		Eyeball = new Eye("content/eyeball.png");
 		Guy = new Player("content/player.png");
+		Projectile = new Entity("content/projectile.png");
+		Projectile->color = glm::vec3(0.0f, 0.0f, 1.0f);
+		Projectile->visible = false;
 		Width = 35;
 		Height = 25;
 		for (unsigned int x = 0; x < Width; x++) {
@@ -19,7 +23,7 @@ GameLevel::GameLevel(unsigned int level_id) {
 				if (y < 2) {
 					temp.push_back(4);
 				}
-				else if (y < 5 && y >= 2) {
+				else if (y < 4 && y >= 2) {
 					temp.push_back(21);
 				}
 				else if (y == 6) {
@@ -47,13 +51,14 @@ GameLevel::GameLevel(unsigned int level_id) {
 				Grid[31][y] = 4;
 				Grid[30][y] = 4;
 
-				//Testing Purposes only
+				/*//Testing Purposes only
 				Grid[7][7] = 10;
 				Grid[8][7] = 10;
 				Grid[9][7] = 10;
 				Grid[7][6] = 10;
 				Grid[8][6] = 10;
 				Grid[9][6] = 10;
+				*/
 			}
 		}
 		break;
@@ -83,10 +88,25 @@ GameLevel::~GameLevel() {
 }
 void GameLevel::update(float delta) {
 	//Update Entities
+	if (Projectile && Eyeball) {
+		//Eyeball fires projectile
+		static glm::vec2 projectile_velocity = glm::vec2(0.0f, 0.0f);
+		if (!Eyeball->attacking) {
+			Projectile->setPosition(Eyeball->getPos().x - 0.5 + Eyeball->pupil_pos.x, Eyeball->getPos().y - 0.5 + Eyeball->pupil_pos.y);
+			projectile_velocity.x = Eyeball->pupil_pos.x - 0.5f;
+			projectile_velocity.y = Eyeball->pupil_pos.y - 0.5f;
+		}
+		else {
+			Projectile->visible = true;
+			Projectile->setVelocity(projectile_velocity.x, projectile_velocity.y);
+		}
+		
+		Projectile->update(delta);
+	}
 	if (Eyeball) {
 		Eyeball->update(delta);
 		Eyeball->updateEye(delta);
-		//printf("Eyeball pos=glm::vec2(%f, %f)\n", Eyeball->getPos().x, Eyeball->getPos().y);
+
 	}
 	if (Guy) {
 		Guy->update(delta);
@@ -126,6 +146,15 @@ void GameLevel::update(float delta) {
 void GameLevel::render() {
 	static bool jumping = true;
 	GLfloat tile_scale = 0.1f;
+	//Player Fell Off
+	if(InputManager::State == PLAYING) {
+		if (Guy->getPos().y < 4 * tile_scale*1.7777f) {
+			InputManager::State = DIED;
+			Camera::PLAYER_LOCK = false;
+			SoundEngine::stopSound("sounds/game-song.wav");
+			SoundEngine::playSound("sounds/menu-theme.wav", glm::vec2(0.0f, 0.0f), true);
+		}
+	}
 	for (unsigned int x = 0; x < Width; x++) {
 		for (unsigned int y = 0; y < Height; y++) {
 			GLfloat xpos = x * tile_scale;
@@ -141,16 +170,18 @@ void GameLevel::render() {
 						color = glm::vec3(0.188f, 0.0, 1.0f);
 
 					//Mouse Hovering over damaged bridge Events go here!
-					if ((y == 6 || y == 7) && (Grid[x][y] != 18 && (Grid[x][y] != 23))) {
-						if (InputManager::MouseX > xpos - Camera::camera_pos.x && InputManager::MouseX < xpos + scalex - Camera::camera_pos.x) {
-							if (InputManager::MouseY > ypos - scaley - Camera::camera_pos.y && InputManager::MouseY < ypos - Camera::camera_pos.y) {
-								if (abs(xpos - Guy->getPos().x) < scalex*3) {
-									color *= 0.5f;
-									if (InputManager::LeftClicked) {
-										if (y == 6)
-											Grid[x][y] = 18;
-										else if (y == 7)
-											Grid[x][y] = 23;
+					if (InputManager::State == PLAYING) {
+						if ((y == 6 || y == 7) && (Grid[x][y] != 18 && (Grid[x][y] != 23))) {
+							if (InputManager::MouseX > xpos - Camera::camera_pos.x && InputManager::MouseX < xpos + scalex - Camera::camera_pos.x) {
+								if (InputManager::MouseY > ypos - scaley - Camera::camera_pos.y && InputManager::MouseY < ypos - Camera::camera_pos.y) {
+									if (abs(xpos - Guy->getPos().x) < scalex * 3) {
+										color *= 0.5f;
+										if (InputManager::LeftClicked) {
+											if (y == 6)
+												Grid[x][y] = 18;
+											else if (y == 7)
+												Grid[x][y] = 23;
+										}
 									}
 								}
 							}
@@ -159,7 +190,7 @@ void GameLevel::render() {
 					Sprite->render("content/overworld.png", Grid[x][y], xpos, ypos, scalex, scaley, color, 0.0f, true);
 					
 					//If game is not paused
-					if (InputManager::State != PAUSED) {
+					if (InputManager::State == PLAYING || InputManager::State == MENU) {
 						if ((InputManager::listContains(87) || InputManager::listContains(32)) && jumping == false) {	//W
 							Guy->setVelocity(Guy->getVelocity().x, 0.2f);
 							jumping = true;
@@ -178,15 +209,14 @@ void GameLevel::render() {
 						Guy->setVelocity(0.0f, 0.0f);
 					}
 					//Check Collision
-					if (Eyeball) {
-
-					}
 					if (Guy) {
 						glm::vec2 player_pos = glm::vec2(Guy->getPos().x, Guy->getPos().y);
 						if (Grid[x][y] == 18 || Grid[x][y] == 23) {
-							if (player_pos.y < ypos + scaley && (player_pos.x < xpos + scalex && player_pos.x > xpos)) {
-								Guy->setPosition(player_pos.x, ypos + scaley);
-								jumping = false;
+							if (player_pos.y < ypos + scaley && (player_pos.x < xpos + scalex*1.25 && player_pos.x > xpos - scalex * .25)) {
+								if (player_pos.y >= ypos) {
+									Guy->setPosition(player_pos.x, ypos + scaley);
+									jumping = false;
+								}
 							}
 							if (player_pos.x + Guy->getScale().x < 5 * scalex)
 								Guy->setPosition(5 * scalex - Guy->getScale().x, player_pos.y);
@@ -242,6 +272,8 @@ void GameLevel::render() {
 	//Render Entities
 	if (Eyeball)
 		Object->render(Eyeball);
+	if (Projectile)
+		Object->render(Projectile);
 	if (Guy)
 		Object->render(Guy);
 }
