@@ -6,6 +6,7 @@
 #include "ObjectRenderer.h"
 #include "Eye.h"
 #include "Player.h"
+#include <cmath>
 
 class GameLevel {
 public:

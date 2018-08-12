@@ -1,10 +1,11 @@
 #include "GameLevel.h"
 #include "ResourceManager.h"
+//Note: the bridge spans left-to-right on y = 6 and y = 7.
 
 GameLevel::GameLevel(unsigned int level_id) {
 	//Default Entity Uninitialized
 	Eyeball = nullptr;
-	Guy = nullptr;
+	Guy = nullptr;				//Note: the bridge spans left-to-right on y = 6 and y = 7.
 
 	switch (level_id) {
 	case 0:
@@ -47,9 +48,12 @@ GameLevel::GameLevel(unsigned int level_id) {
 				Grid[30][y] = 4;
 
 				//Testing Purposes only
-				Grid[7][7] = 20;
-				Grid[8][7] = 20;
-				Grid[9][7] = 20;
+				Grid[7][7] = 10;
+				Grid[8][7] = 10;
+				Grid[9][7] = 10;
+				Grid[7][6] = 10;
+				Grid[8][6] = 10;
+				Grid[9][6] = 10;
 			}
 		}
 		break;
@@ -82,10 +86,41 @@ void GameLevel::update(float delta) {
 	if (Eyeball) {
 		Eyeball->update(delta);
 		Eyeball->updateEye(delta);
+		//printf("Eyeball pos=glm::vec2(%f, %f)\n", Eyeball->getPos().x, Eyeball->getPos().y);
 	}
 	if (Guy) {
 		Guy->update(delta);
 		Guy->updatePlayer(delta);
+	}
+	if (Guy && Eyeball) {
+		//Makes sure the Eyeball is staring at the Player at all times
+		glm::vec2 distance;
+		distance.x = Eyeball->getPos().x - Guy->getPos().x;
+		distance.y = Eyeball->getPos().y - Guy->getPos().y;
+		GLfloat magnitude = (GLfloat)sqrt(distance.x*distance.x + distance.y*distance.y);
+		Eyeball->pupil_pos = glm::vec2(-distance.x/(magnitude*4) + 0.5f, -distance.y/ (magnitude*4) + 0.5f);
+		//Makes sure the eyeball follows the player
+		glm::vec2 player_pos = glm::vec2(Guy->getPos().x, Guy->getPos().y);
+		glm::vec2 eyeball_pos = glm::vec2(Eyeball->getPos().x, Eyeball->getPos().y);
+		if (InputManager::State != PAUSED) {
+			if (player_pos.x > eyeball_pos.x) {
+				Eyeball->setVelocity(Eyeball->getVelocity().x + 0.1f*delta, Eyeball->getVelocity().y);
+			}
+			else {
+				Eyeball->setVelocity(Eyeball->getVelocity().x - 0.1f*delta, Eyeball->getVelocity().y);
+			}
+			if (Eyeball->getPos().y > 2.4f) {
+				Eyeball->setPosition(Eyeball->getPos().x, 2.4f);
+				Eyeball->setVelocity(Eyeball->getVelocity().x, -0.1f);
+			}
+			else if (Eyeball->getPos().y < 2.0f) {
+				Eyeball->setPosition(Eyeball->getPos().x, 2.0f);
+				Eyeball->setVelocity(Eyeball->getVelocity().x, 0.1f);
+			}
+		}
+		else {
+			Eyeball->setVelocity(0.0f, 0.0f);
+		}
 	}
 }
 void GameLevel::render() {
@@ -100,10 +135,27 @@ void GameLevel::render() {
 			if (xpos < Camera::camera_pos.x + 1.2f && xpos > Camera::camera_pos.x - 1.2f) {
 				if (ypos < Camera::camera_pos.y + 1.2f && ypos >Camera::camera_pos.y - 1.2f) {
 					glm::vec3 color = glm::vec3(1.0f, 1.0f, 1.0f);
-					if (Grid[x][y] == 20)
+					if (Grid[x][y] == 20 || Grid[x][y] == 10 || Grid[x][y] == 11)
 						color = glm::vec3(0.388f, 0.608f, 1.0f);
 					if (Grid[x][y] == 21)
 						color = glm::vec3(0.188f, 0.0, 1.0f);
+
+					//Mouse Hovering over damaged bridge Events go here!
+					if ((y == 6 || y == 7) && (Grid[x][y] != 18 && (Grid[x][y] != 23))) {
+						if (InputManager::MouseX > xpos - Camera::camera_pos.x && InputManager::MouseX < xpos + scalex - Camera::camera_pos.x) {
+							if (InputManager::MouseY > ypos - scaley - Camera::camera_pos.y && InputManager::MouseY < ypos - Camera::camera_pos.y) {
+								if (abs(xpos - Guy->getPos().x) < scalex*3) {
+									color *= 0.5f;
+									if (InputManager::LeftClicked) {
+										if (y == 6)
+											Grid[x][y] = 18;
+										else if (y == 7)
+											Grid[x][y] = 23;
+									}
+								}
+							}
+						}
+					}
 					Sprite->render("content/overworld.png", Grid[x][y], xpos, ypos, scalex, scaley, color, 0.0f, true);
 					
 					//If game is not paused
@@ -140,6 +192,18 @@ void GameLevel::render() {
 								Guy->setPosition(5 * scalex - Guy->getScale().x, player_pos.y);
 							if (player_pos.x + Guy->getScale().x > 30 * scalex)
 								Guy->setPosition(30 * scalex - Guy->getScale().x, player_pos.y);
+						}
+					}
+					if (Eyeball) {
+						glm::vec2 eyeball_pos = glm::vec2(Eyeball->getPos().x, Eyeball->getPos().y);
+						if (Grid[x][y] == 18 || Grid[x][y] == 23) {
+							if (eyeball_pos.y < ypos + scaley && (eyeball_pos.x < xpos + scalex && eyeball_pos.x > xpos)) {
+								Eyeball->setPosition(eyeball_pos.x, ypos + scaley);
+							}
+							if (eyeball_pos.x - Eyeball->getScale().x < 5 * scalex)
+								Eyeball->setPosition(5 * scalex + Eyeball->getScale().x, eyeball_pos.y);
+							if (eyeball_pos.x + Eyeball->getScale().x > 30 * scalex)
+								Eyeball->setPosition(30 * scalex - Eyeball->getScale().x, eyeball_pos.y);
 						}
 					}
 				}
