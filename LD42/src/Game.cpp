@@ -5,6 +5,9 @@
 #include "Camera.h"
 
 Game::Game(GLFWwindow* window, const int w, const int h) : driver(window), Width(w), Height(h), FPS(0) {
+	//Game starts paused
+	InputManager::State = PAUSED;
+
 	//initalize Sound Engine
 	SoundEngine::Initialize();
 
@@ -98,6 +101,19 @@ void Game::update(float delta) {
 	//Retrieve KeyList from the InputManager
 	std::vector<GLint> KeyList = InputManager::getKeyList();
 
+	//Check Game State. If PAUSED, then show Pause Menu
+	if (InputManager::listContains(256) && InputManager::State != PAUSED) {
+		InputManager::State = PAUSED;
+		SoundEngine::stopSound("sounds/game-song.wav");
+		SoundEngine::playSound("sounds/menu-theme.wav", glm::vec2(0.0f, 0.0f), true);
+	}
+	if (InputManager::State == PAUSED) {
+		Menu->visible = true;
+	}
+	else {
+		Menu->visible = false;
+	}
+
 	//Angle Player
 	if (InputManager::listContains(263)) { //Left Arrow
 
@@ -132,6 +148,7 @@ void Game::update(float delta) {
 	}
 
 	Levels[Level]->update(delta);
+	Menu->update(delta);
 
 	// Makes the camera move around the map at the main menu
 	static glm::vec2 cam_velocity = glm::vec2(Camera::Speed, Camera::Speed / 2.5f);

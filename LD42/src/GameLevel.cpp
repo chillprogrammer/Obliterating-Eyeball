@@ -12,7 +12,7 @@ GameLevel::GameLevel(unsigned int level_id) {
 	}*/
 	switch (level_id) {
 	case 0:
-		Width = 55;
+		Width = 35;
 		Height = 25;
 		for (unsigned int x = 0; x < Width; x++) {
 			std::vector<unsigned int> temp;

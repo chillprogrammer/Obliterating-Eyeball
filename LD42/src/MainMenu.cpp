@@ -9,6 +9,8 @@ MainMenu::MainMenu(GLFWwindow* driver) {
 	Object = new ObjectRenderer();
 	Made = new Made_Menu(Object, Text);
 
+	glm::vec2 oblit_pos = glm::vec2(-0.5f, 0.8f);
+
 	for (unsigned int i = 0; i < 3; i++) {
 		Buttons.push_back(new Button());
 		switch (i) {
@@ -37,7 +39,8 @@ MainMenu::MainMenu(GLFWwindow* driver) {
 		Buttons[i]->posy = 0.1f - 0.25f*i;
 		Buttons[i]->scaley = 0.05f;
 	}
-	//SoundEngine::playSound("sounds/menu-theme.wav", glm::vec2(0.0f, 0.0f), true);
+	eyeball_rotation = 0.0f;
+	SoundEngine::playSound("sounds/menu-theme.wav", glm::vec2(0.0f, 0.0f), true);
 }
 MainMenu::~MainMenu() {
 	delete Made;
@@ -48,7 +51,36 @@ MainMenu::~MainMenu() {
 	}
 }
 void MainMenu::update(float delta) {
-
+	//Update Title position and rotation
+	static float rate = 15.0f;
+	if (eyeball_rotation > 15.0f) {
+		eyeball_rotation = 15.0f;
+		rate *= -1;
+	}
+	if (eyeball_rotation < -15.0f) {
+		eyeball_rotation = -15.0f;
+		rate *= -1;
+	}
+	eyeball_rotation += rate*delta;
+	static glm::vec2 oblit_vel = glm::vec2(0.3f, 0.15f);
+	oblit_pos.x += oblit_vel.x*delta;
+	oblit_pos.y += oblit_vel.y*delta;
+	if (oblit_pos.x > -0.45f) {
+		oblit_pos.x = -0.45f;
+		oblit_vel.x *= -1;
+	}
+	else if (oblit_pos.x < -0.55f) {
+		oblit_pos.x = -0.55f;
+		oblit_vel.x *= -1;
+	}
+	if (oblit_pos.y > 0.85f) {
+		oblit_pos.y = 0.85f;
+		oblit_vel.y *= -1;
+	}
+	else if (oblit_pos.y < 0.75f) {
+		oblit_pos.y = 0.75f;
+		oblit_vel.y *= -1;
+	}
 }
 void MainMenu::render() {
 	if (visible) {
@@ -67,9 +99,10 @@ void MainMenu::render() {
 			Object->render(Buttons[i]);
 		}
 		if (Buttons[0]->Pressed) {
+			InputManager::State = PLAYING;
 			visible = false;
-			//SoundEngine::stopSound("sounds/menu-theme.wav");
-			//SoundEngine::playSound("sounds/game-song.wav", glm::vec2(0.0f, 0.0f), true);
+			SoundEngine::stopSound("sounds/menu-theme.wav");
+			SoundEngine::playSound("sounds/game-song.wav", glm::vec2(0.0f, 0.0f), true);
 		}
 		else if (Buttons[1]->Pressed) {
 			Made->visible = true;
@@ -81,22 +114,21 @@ void MainMenu::render() {
 		if (Made->visible) {
 			Made->render();
 		}
-
-		//Render Title
-		static float rotation = 0.0f;
-		static float rate = 0.15f;
-		if (rotation > 15.0f)
-			rate = -0.15;
-		if (rotation < -15.0f)
-			rate = 0.15;
-		rotation += rate;
-		Text->render("Game Title!", -0.25f, 0.8f, 0.2f, 0.2*1.777f, glm::vec3(0.72157f, 0.52549f, 0.04314f), rotation);
 	}
 	else {
 		for (unsigned int i = 0; i < Buttons.size(); i++) {
 			Buttons[i]->Visible = false;
 		}
 	}
+
+	//Render Game Title (Obliterate vibrates, and Eyeball rotates)
+	Text->render("Obliterating", oblit_pos.x, oblit_pos.y, 0.2f, 0.2*1.777f, glm::vec3(0.99f, 0.52549f, 0.04314f), 0.0f);
+	Text->render("Eyeball!", 0.20f, 0.8f, 0.2f, 0.2*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), eyeball_rotation);
+
+	//Render Instructions
+	Text->render("Goal: Defeat the Eyeball.", -0.90f, -0.4f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.8f, 1.0f), 0.0f);
+	Text->render("The eyeball destroys blocks. Place blocks to stand on.", -0.90f, -0.6f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.8f, 1.0f), 0.0f);
+	Text->render("Eventually you might run out of space.", -0.90f, -0.8f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.8f, 1.0f), 0.0f);
 }
 //The screen that pops up when you click the "How the Game Was Made" button.
 MainMenu::Made_Menu::Made_Menu(ObjectRenderer* O, TextRenderer* T) {
@@ -125,11 +157,11 @@ void MainMenu::Made_Menu::render() {
 			visible = false;
 		}
 		float text_scale = 0.1f;
-		Text->render("Programmer:", -0.3f, 0.0f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
-		Text->render("Artist:", -0.3f, -0.15f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
-		Text->render("Sound Guy:", -0.3f, -0.30f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
+		Text->render("Programmer:", -0.3f, 0.15f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
+		Text->render("Artist:", -0.3f, 0.0f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
+		Text->render("Sound Guy:", -0.3f, -0.15f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
+		Text->render("Joel Schechter", 0.0f, 0.15f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 		Text->render("Joel Schechter", 0.0f, 0.0f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 		Text->render("Joel Schechter", 0.0f, -0.15f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
-		Text->render("Joel Schechter", 0.0f, -0.30f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 	}
 }
