@@ -22,7 +22,7 @@ MainMenu::MainMenu(GLFWwindow* driver) {
 		case 1:
 			Buttons[i]->Text = "Credits";
 			Buttons[i]->scalex = 0.2f;
-			Buttons[i]->border_x = 0.01f;
+			Buttons[i]->border_x = 0.015f;
 			break;
 		case 2:
 			Buttons[i]->Text = "Exit";
@@ -37,7 +37,7 @@ MainMenu::MainMenu(GLFWwindow* driver) {
 		Buttons[i]->border_y = 0.1f;
 		Buttons[i]->posx = 0.0f;
 		Buttons[i]->posy = 0.1f - 0.25f*i;
-		Buttons[i]->scaley = 0.05f;
+		Buttons[i]->scaley = 0.08f;
 	}
 	eyeball_rotation = 0.0f;
 	SoundEngine::playSound("sounds/menu-theme.wav", glm::vec2(0.0f, 0.0f), true);
@@ -65,20 +65,20 @@ void MainMenu::update(float delta) {
 	static glm::vec2 oblit_vel = glm::vec2(0.3f, 0.15f);
 	oblit_pos.x += oblit_vel.x*delta;
 	oblit_pos.y += oblit_vel.y*delta;
-	if (oblit_pos.x > -0.45f) {
-		oblit_pos.x = -0.45f;
+	if (oblit_pos.x > -0.48f) {
+		oblit_pos.x = -0.48f;
 		oblit_vel.x *= -1;
 	}
-	else if (oblit_pos.x < -0.55f) {
-		oblit_pos.x = -0.55f;
+	else if (oblit_pos.x < -0.52f) {
+		oblit_pos.x = -0.52f;
 		oblit_vel.x *= -1;
 	}
-	if (oblit_pos.y > 0.85f) {
-		oblit_pos.y = 0.85f;
+	if (oblit_pos.y > 0.82f) {
+		oblit_pos.y = 0.82f;
 		oblit_vel.y *= -1;
 	}
-	else if (oblit_pos.y < 0.75f) {
-		oblit_pos.y = 0.75f;
+	else if (oblit_pos.y < 0.78f) {
+		oblit_pos.y = 0.78f;
 		oblit_vel.y *= -1;
 	}
 }
@@ -96,6 +96,10 @@ void MainMenu::render() {
 		}
 
 		for (unsigned int i = 0; i < Buttons.size(); i++) {
+			if (InputManager::State == MENU)
+				Buttons[0]->Text = "Play";
+			else if (InputManager::State == PAUSED)
+				Buttons[0]->Text = "Resume";
 			Object->render(Buttons[i]);
 		}
 		if (Buttons[0]->Pressed) {
@@ -126,9 +130,10 @@ void MainMenu::render() {
 	Text->render("Eyeball!", 0.20f, 0.8f, 0.2f, 0.2*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), eyeball_rotation);
 
 	//Render Instructions
-	Text->render("Goal: Defeat the Eyeball.", -0.90f, -0.4f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.8f, 1.0f), 0.0f);
-	Text->render("The eyeball destroys blocks. Place blocks to stand on.", -0.90f, -0.6f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.8f, 1.0f), 0.0f);
-	Text->render("Eventually you might run out of space.", -0.90f, -0.8f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.8f, 1.0f), 0.0f);
+	Text->render("Goal: Defeat the Eyeball.", -0.90f, -0.4f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.2f, 0.2f), 0.0f);
+	Text->render("The eyeball destroys blocks. Place blocks to stand on.", -0.90f, -0.55f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.2f, 0.2f), 0.0f);
+	Text->render("If you fall in the water - you die.", -0.90f, -0.7f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.2f, 0.2f), 0.0f);
+	Text->render("Eventually you might run out of space.", -0.90f, -0.85f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.2f, 0.2f), 0.0f);
 }
 //The screen that pops up when you click the "How the Game Was Made" button.
 MainMenu::Made_Menu::Made_Menu(ObjectRenderer* O, TextRenderer* T) {
@@ -145,7 +150,7 @@ MainMenu::Made_Menu::Made_Menu(ObjectRenderer* O, TextRenderer* T) {
 	Back->border_y = 0.1f;
 	Back->posx = 0.5f;
 	Back->posy = -0.5f;
-	Back->scaley = 0.05f;
+	Back->scaley = 0.08f;
 }
 MainMenu::Made_Menu::~Made_Menu() {
 	delete Back;

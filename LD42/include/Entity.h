@@ -8,7 +8,7 @@
 
 class Entity {
 public:
-	Entity(const GLchar* img_path);
+	Entity(const char* img_path);
 	virtual ~Entity();
 	virtual void render();
 	void update(GLfloat delta);
@@ -27,6 +27,10 @@ public:
 	glm::vec3 color;
 	GLfloat alpha;
 	GLboolean sound_test;
+	std::string shader_caller;
+
+	//Eyeball specific variables
+	glm::vec2 pupil_pos, pupil_scale;
 protected:
 	glm::vec2 pos, scale, velocity;
 	GLfloat delta, angle; //In Degrees

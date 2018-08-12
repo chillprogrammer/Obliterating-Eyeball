@@ -171,6 +171,8 @@
     <ClInclude Include="include\WaveFile.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\Eyeball.fs" />
+    <None Include="shaders\Eyeball.vs" />
     <None Include="shaders\Image_Shader.fs" />
     <None Include="shaders\Image_Shader.vs" />
     <None Include="shaders\Rect_Shader.fs" />

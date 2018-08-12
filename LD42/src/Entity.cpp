@@ -14,6 +14,7 @@ Entity::Entity(const GLchar* img_path) {
 	if (ResourceManager::getTextureID(img_path) == 0)
 		ResourceManager::loadTexture(img_path, img_path);
 	image = img_path;
+	shader_caller = "Image";
 }
 Entity::~Entity() {
 	//printf("Testing Destruction of ENTITY\n");

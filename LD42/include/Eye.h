@@ -7,6 +7,5 @@ public:
 	~Eye();
 
 private:
-
 };
 #endif;
