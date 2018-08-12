@@ -46,7 +46,6 @@ glm::vec2 Entity::getScale() {
 	return scale;
 }
 GLfloat Entity::getAng() { return angle; }
-GLfloat Entity::getTurnThrust() { return turn_force; }
 void Entity::update(GLfloat d) {
 	delta = d;
 	translatePosition(velocity.x*delta, velocity.y*delta);

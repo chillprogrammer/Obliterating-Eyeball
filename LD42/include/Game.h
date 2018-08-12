@@ -15,6 +15,7 @@
 #include "SoundEngine.h"
 #include "GameLevel.h"
 #include "MainMenu.h"
+#include "Eye.h"
 
 class Game
 {
@@ -41,5 +42,8 @@ private:
 	TextRenderer* Text;
 	ObjectRenderer* Object;
 	GLFWwindow* driver;
+
+	//Entities
+	Entity* Eyeball;
 };
 #endif

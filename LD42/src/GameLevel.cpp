@@ -13,7 +13,7 @@ GameLevel::GameLevel(unsigned int level_id) {
 	switch (level_id) {
 	case 0:
 		Width = 55;
-		Height = 45;
+		Height = 25;
 		for (unsigned int x = 0; x < Width; x++) {
 			std::vector<unsigned int> temp;
 			for (unsigned int y = 0; y < Height; y++) {
@@ -54,7 +54,10 @@ void GameLevel::render() {
 	GLfloat tile_scale = 0.1f;
 	for (unsigned int x = 0; x < Width; x++) {
 		for (unsigned int y = 0; y < Height; y++) {
-			Sprite->render("content/overworld.png", Grid[x][y], x*tile_scale, y*tile_scale*1.7777f, 0.1f, 0.1f*1.7777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f, true);
+			if (x*tile_scale < Camera::camera_pos.x + 1.2f && x*tile_scale > Camera::camera_pos.x - 1.2f) {
+				if(y*tile_scale*1.777f < Camera::camera_pos.y + 1.2f && y*tile_scale*1.777f >Camera::camera_pos.y - 1.2f)
+					Sprite->render("content/overworld.png", Grid[x][y], x*tile_scale, y*tile_scale*1.7777f, 0.1f, 0.1f*1.7777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f, true);
+			}
 		}
 	}
 }

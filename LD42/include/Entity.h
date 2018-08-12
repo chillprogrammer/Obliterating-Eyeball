@@ -21,7 +21,6 @@ public:
 	glm::vec2 getPos();
 	glm::vec2 getScale();
 	const GLchar* getImage();
-	GLfloat getTurnThrust();
 	
 	//Public Variables
 	GLboolean visible;
@@ -31,7 +30,7 @@ public:
 protected:
 	glm::vec2 pos, scale, velocity;
 	GLfloat delta, angle; //In Degrees
-	GLfloat health, thrust_force, turn_force;
+	GLfloat health;
 	std::string image;
 };
 #endif

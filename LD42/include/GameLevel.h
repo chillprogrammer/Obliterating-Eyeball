@@ -2,6 +2,7 @@
 #define GAMELEVEL_H
 #include <vector>
 #include "SpriteRenderer.h"
+#include "Camera.h"
 
 class GameLevel {
 public:

@@ -37,7 +37,7 @@ MainMenu::MainMenu(GLFWwindow* driver) {
 		Buttons[i]->posy = 0.1f - 0.25f*i;
 		Buttons[i]->scaley = 0.05f;
 	}
-	SoundEngine::playSound("sounds/menu-theme.wav", glm::vec2(0.0f, 0.0f), true);
+	//SoundEngine::playSound("sounds/menu-theme.wav", glm::vec2(0.0f, 0.0f), true);
 }
 MainMenu::~MainMenu() {
 	delete Made;
@@ -68,8 +68,8 @@ void MainMenu::render() {
 		}
 		if (Buttons[0]->Pressed) {
 			visible = false;
-			SoundEngine::stopSound("sounds/menu-theme.wav");
-			SoundEngine::playSound("sounds/game-song.wav", glm::vec2(0.0f, 0.0f), true);
+			//SoundEngine::stopSound("sounds/menu-theme.wav");
+			//SoundEngine::playSound("sounds/game-song.wav", glm::vec2(0.0f, 0.0f), true);
 		}
 		else if (Buttons[1]->Pressed) {
 			Made->visible = true;
@@ -124,12 +124,12 @@ void MainMenu::Made_Menu::render() {
 		if (Back->Pressed) {
 			visible = false;
 		}
-		float text_scale = 0.08f;
+		float text_scale = 0.1f;
 		Text->render("Programmer:", -0.3f, 0.0f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
-		Text->render("Artist:", -0.3f, -0.1f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
-		Text->render("Sound Guy:", -0.3f, -0.2f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
+		Text->render("Artist:", -0.3f, -0.15f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
+		Text->render("Sound Guy:", -0.3f, -0.30f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
 		Text->render("Joel Schechter", 0.0f, 0.0f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
-		Text->render("Joel Schechter", 0.0f, -0.1f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
-		Text->render("Joel Schechter", 0.0f, -0.2f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+		Text->render("Joel Schechter", 0.0f, -0.15f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+		Text->render("Joel Schechter", 0.0f, -0.30f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 	}
 }

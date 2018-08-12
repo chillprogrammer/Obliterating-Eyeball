@@ -129,6 +129,7 @@
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Driver.cpp" />
     <ClCompile Include="src\Entity.cpp" />
+    <ClCompile Include="src\Eye.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameLevel.cpp" />
     <ClCompile Include="src\Image.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="include\Button.h" />
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\Entity.h" />
+    <ClInclude Include="include\Eye.h" />
     <ClInclude Include="include\ft2build.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\GameLevel.h" />
