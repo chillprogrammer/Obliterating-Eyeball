@@ -178,7 +178,7 @@ MainMenu::Made_Menu::Made_Menu(ObjectRenderer* O, TextRenderer* T) {
 	Back->textColor = glm::vec3(1.0f, 1.0f, 1.0f);
 	Back->border_y = 0.1f;
 	Back->posx = 0.5f;
-	Back->posy = -0.5f;
+	Back->posy = -0.7f;
 	Back->scaley = 0.08f;
 }
 MainMenu::Made_Menu::~Made_Menu() {
