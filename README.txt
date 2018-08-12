@@ -1,5 +1,5 @@
 This game was made in Visual Studio 2017.
-It relies on the OpenGL and OpenAL open-source libraries.
+It relies on the OpenGL and OpenAL open-source libraries. So I included them!
 A Windows Executable file can be found here:
 https://github.com/copetv/LD42/raw/master/LD42/Windows%20Executable%20Version.zip
 
