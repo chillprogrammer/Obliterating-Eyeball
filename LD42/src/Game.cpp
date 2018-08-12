@@ -26,6 +26,18 @@ Game::Game(GLFWwindow* window, const int w, const int h) : driver(window), Width
 	Level = 0;
 
 	Menu = new MainMenu(window);
+	Home = new Button("Back To Main Menu");
+	Home->Visible = false;
+	Home->scalex = 0.25f;
+	Home->border_x = 0.025f;
+	Home->backColor = glm::vec3(0.40588f, 0.69216f, 0.437255f);
+	Home->borderColor = glm::vec3(0.0f, 0.0f, 0.0f);
+	Home->hoverColor = glm::vec3(0.5f, 0.5f, 0.5f);
+	Home->textColor = glm::vec3(1.0f, 1.0f, 1.0f);
+	Home->border_y = 0.1f;
+	Home->posx = 0.0f;
+	Home->posy = 0.1f - 0.25f*4;
+	Home->scaley = 0.08f;
 }
 Game::~Game() {
 	//Clear Memory From Programs
@@ -50,7 +62,7 @@ void Game::character_callback(GLFWwindow* window, unsigned int codepoint) {
 void Game::key_callback(int key, int scancode, int action, int mods) {
 	if (action == GLFW_PRESS) {
 		InputManager::addKey(key);
-		printf("%d\n", key);
+		//printf("%d\n", key);
 	}
 	if (action == GLFW_RELEASE) {
 		InputManager::removeKey(key);
@@ -63,7 +75,8 @@ void Game::render() {
 	//Render the selected level
 	Levels[Level]->render();
 
-	//Render Entities
+	if (InputManager::State == PLAYING)
+		Menu->visible = false;
 
 	//Render Main Menu
 	if (Menu->visible) {
@@ -72,6 +85,24 @@ void Game::render() {
 
 	//Show FPS
 	Text->render("FPS: " + std::to_string(FPS), -0.95f, 0.95f, 0.1f, 0.2 / 1.777f, glm::vec3(0.8f, 0.8f, 0.8f), 0.0f);
+
+	//After Death Events
+	//Render the "Back to Main Menu" Button (Will only appear after dying, or setting to visible);
+	if (InputManager::State == DIED) {
+		Home->Visible = true;
+		Text->render("You died in the lava.", -0.50f, 0.20f, 0.2f, 0.2 * 1.777f, glm::vec3(1.0f, 0.2f, 0.9f), 0.0f);
+		Text->render("You'll have better luck next time.", -0.80f, -0.15f, 0.2f, 0.2 * 1.777f, glm::vec3(1.0f, 0.2f, 0.9f), 0.0f);
+	}
+	Object->render(Home);
+	if (Home->Pressed) {
+		InputManager::State = MENU;
+		Home->Visible = false;
+		Home->Pressed = false;
+		delete Levels[Level];
+		GameLevel* Lvl1 = new GameLevel(0);
+		Levels[0] = Lvl1;
+		Camera::PLAYER_LOCK = false;
+	}
 
 	//Refresh the Sound Program - memory gets deallocated from buffers when it is not used anymore.
 	SoundEngine::Refresh();

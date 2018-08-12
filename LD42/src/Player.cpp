@@ -4,7 +4,7 @@ Player::Player(const char* img) : Entity(img) {
 	if (ResourceManager::getShaderID("Player") == 0)
 		ResourceManager::loadShader("shaders/Player.vs", "shaders/Player.fs", "Player");
 	health = 100.0f;
-	velocity.y = -0.0f;
+	velocity.y = 0.0f;
 	pos.x = 1.51f;
 	pos.y = 1.5f;
 	scale.x = 0.05f;

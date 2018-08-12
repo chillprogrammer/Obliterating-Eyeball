@@ -21,7 +21,7 @@ Eye::~Eye() {
 void Eye::updateEye(float d) {
 	if (InputManager::State == PLAYING) {
 		fire_counter += 1.0f*d;
-		if (fire_counter > 3.0f) {
+		if (fire_counter > 1.0f) {
 			attacking = true;
 			fire_counter = 0.0f;
 		}

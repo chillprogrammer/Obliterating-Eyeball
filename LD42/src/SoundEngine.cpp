@@ -56,7 +56,7 @@ void SoundEngine::Initialize() {
 }
 void SoundEngine::Revert() {
 	for (unsigned int i = 0; i < SoundList.size(); i++) {
-		printf("Deallocating memory from original sound: %s\n", SoundList[i]->path);
+		//printf("Deallocating memory from original sound: %s\n", SoundList[i]->path);
 		delete SoundList[i];
 	}
 	device = alcGetContextsDevice(context);

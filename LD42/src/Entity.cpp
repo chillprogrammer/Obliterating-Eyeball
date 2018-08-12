@@ -6,8 +6,8 @@ Entity::Entity(const char* img_path) {
 	health = 100.0f;
 	pos.x = 1.95f;
 	pos.y = 2.0f;
-	scale.x = 0.05f;
-	scale.y = 0.05*1.777f;
+	scale.x = 0.25f;
+	scale.y = 0.25f*1.777f;
 	velocity.x = 0;
 	velocity.y = 0;
 	color = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -18,7 +18,7 @@ Entity::Entity(const char* img_path) {
 	shader_caller = "Image";
 	animation_frame = 0.0f;
 	total_animation_frames = 1.0f;
-	GRAVITY = -0.0025f;
+	GRAVITY = -0.005f;
 	attacking = false;
 }
 Entity::~Entity() {

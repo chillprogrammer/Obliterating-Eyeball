@@ -16,6 +16,7 @@ public:
 	//Functions
 	void update(float delta);
 	void render();
+	void Restart(unsigned int id);
 private:
 	unsigned int Width, Height;
 	std::vector<std::vector<unsigned int>> Grid;

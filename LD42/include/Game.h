@@ -15,6 +15,7 @@
 #include "SoundEngine.h"
 #include "GameLevel.h"
 #include "MainMenu.h"
+#include "Button.h"
 
 class Game
 {
@@ -41,5 +42,6 @@ private:
 	TextRenderer* Text;
 	ObjectRenderer* Object;
 	GLFWwindow* driver;
+	Button* Home;
 };
 #endif

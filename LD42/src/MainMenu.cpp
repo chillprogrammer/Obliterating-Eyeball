@@ -11,7 +11,7 @@ MainMenu::MainMenu(GLFWwindow* driver) {
 
 	glm::vec2 oblit_pos = glm::vec2(-0.5f, 0.8f);
 
-	for (unsigned int i = 0; i < 3; i++) {
+	for (unsigned int i = 0; i < 4; i++) {
 		Buttons.push_back(new Button());
 		switch (i) {
 		case 0:
@@ -36,7 +36,7 @@ MainMenu::MainMenu(GLFWwindow* driver) {
 		Buttons[i]->textColor = glm::vec3(1.0f, 1.0f, 1.0f);
 		Buttons[i]->border_y = 0.1f;
 		Buttons[i]->posx = 0.0f;
-		Buttons[i]->posy = 0.1f - 0.25f*i;
+		Buttons[i]->posy = 0.3f - 0.25f*i;
 		Buttons[i]->scaley = 0.08f;
 	}
 	eyeball_rotation = 0.0f;
@@ -103,6 +103,7 @@ void MainMenu::render() {
 			Object->render(Buttons[i]);
 		}
 		if (Buttons[0]->Pressed) {
+			Camera::PLAYER_LOCK = true;
 			InputManager::State = PLAYING;
 			visible = false;
 			SoundEngine::stopSound("sounds/menu-theme.wav");
@@ -149,11 +150,18 @@ void MainMenu::render() {
 		Text->render("<Paused>", -0.20f, 0.5f, 0.2f, 0.2*1.777f, pause_color, 0.0f);
 	}
 
-	//Render Instructions
-	Text->render("Goal: Defeat the Eyeball.", -0.90f, -0.4f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.2f, 0.2f), 0.0f);
-	Text->render("The eyeball destroys blocks. Place blocks to stand on.", -0.90f, -0.55f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.2f, 0.2f), 0.0f);
-	Text->render("If you fall in the water - you die.", -0.90f, -0.7f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.2f, 0.2f), 0.0f);
-	Text->render("Eventually you might run out of space.", -0.90f, -0.85f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.2f, 0.2f), 0.0f);
+	//Render Goal
+	Text->render("Goal: Survive for as long as you can!", -0.90f, -0.4f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
+	Text->render("The eyeball destroys the bridge.", -0.90f, -0.55f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
+	Text->render("If you fall in the lava - you die.", -0.90f, -0.7f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
+	Text->render("Eventually you might run out of space.", -0.90f, -0.85f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
+
+	//Render Controls
+	Text->render("Controls:", 0.30f, 0.3f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
+	Text->render("A = Move Left", 0.30f, 0.15f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
+	Text->render("D = Move Right", 0.30f, 0.0f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
+	Text->render("W or SPACE = Jump", 0.30f, -0.15f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
+	Text->render("LEFT CLICK = Place Bridge Pieces", 0.18f, -0.30f, 0.1f, 0.1*1.777f, glm::vec3(0.5f, 0.8f, 0.5f), 0.0f);
 }
 //The screen that pops up when you click the "How the Game Was Made" button.
 MainMenu::Made_Menu::Made_Menu(ObjectRenderer* O, TextRenderer* T) {
@@ -182,11 +190,11 @@ void MainMenu::Made_Menu::render() {
 			visible = false;
 		}
 		float text_scale = 0.1f;
-		Text->render("Programmer:", -0.3f, 0.15f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
-		Text->render("Artist:", -0.3f, 0.0f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
-		Text->render("Sound Guy:", -0.3f, -0.15f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
-		Text->render("Joel Schechter", 0.0f, 0.15f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
-		Text->render("Joel Schechter", 0.0f, 0.0f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
-		Text->render("Joel Schechter", 0.0f, -0.15f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+		Text->render("Programmer:", -0.6f, 0.15f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
+		Text->render("Artist:", -0.6f, 0.0f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
+		Text->render("Sound Guy:", -0.6f, -0.15f, text_scale, text_scale*1.777f, glm::vec3(0.92157f, 0.22549f, 0.04314f), 0.0f);
+		Text->render("Joel Schechter", -0.3f, 0.15f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+		Text->render("Joel Schechter", -0.3f, 0.0f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
+		Text->render("Joel Schechter", -0.3f, -0.15f, text_scale, text_scale*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), 0.0f);
 	}
 }
