@@ -27,8 +27,6 @@ static void error_callback(int error, const char* description) {
 }
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	game->key_callback(key, scancode, action, mods);
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
 }
 static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 	Width = width;
@@ -71,7 +69,7 @@ int main(void) {
 	Width = mode->width/1.5;
 	Height = mode->height/1.5;
 	//window = glfwCreateWindow(Width, Height, "Untitled Space Game", glfwGetPrimaryMonitor(), NULL);
-	window = glfwCreateWindow(Width, Height, "Ludum Dare 42", NULL, NULL);
+	window = glfwCreateWindow(Width, Height, "Obliterating Eyeball", NULL, NULL);
 	//Set window callback events
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, cursor_pos_callback);

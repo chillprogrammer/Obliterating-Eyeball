@@ -18,14 +18,14 @@ Game::Game(GLFWwindow* window, const int w, const int h) : driver(window), Width
 	//Initialize Objects
 	Text = new TextRenderer();
 	Object = new ObjectRenderer();
-	Camera::PLAYER_LOCK = false;
+	//True = Camera follows player. False = (Camera moves around regardless of player's location)
+	Camera::PLAYER_LOCK = true;
 
 	GameLevel* Lvl1 = new GameLevel(0);
 	Levels.push_back(Lvl1);
 	Level = 0;
 
 	Menu = new MainMenu(window);
-	Eyeball = new Eye("content/eyeball.png");
 }
 Game::~Game() {
 	//Clear Memory From Programs
@@ -35,6 +35,7 @@ Game::~Game() {
 	delete Menu;
 	delete Text;
 	delete Object;
+	//Delete Levels
 	for (unsigned int i = 0; i < Levels.size(); i++) {
 		delete Levels[i];
 	}
@@ -63,7 +64,6 @@ void Game::render() {
 	Levels[Level]->render();
 
 	//Render Entities
-	Object->render(Eyeball);
 
 	//Render Main Menu
 	if (Menu->visible) {
@@ -129,17 +129,20 @@ void Game::update(float delta) {
 	}
 	//Move Player
 	if (!Menu->visible) {
-		if (InputManager::listContains(87)) {	//W
-			Camera::translateCamera(glm::vec3(0.0f, Camera::Speed, 0.0f));
-		}
-		if (InputManager::listContains(83)) {	//S
-			Camera::translateCamera(glm::vec3(0.0f, -Camera::Speed, 0.0f));
-		}
-		if (InputManager::listContains(65)) { //A
-			Camera::translateCamera(glm::vec3(-Camera::Speed, 0.0f, 0.0f));
-		}
-		if (InputManager::listContains(68)) { //D
-			Camera::translateCamera(glm::vec3(Camera::Speed, 0.0f, 0.0f));
+		//If the camera should lock onto the player
+		if (Camera::PLAYER_LOCK == false) {
+			if (InputManager::listContains(87)) {	//W
+				Camera::translateCamera(glm::vec3(0.0f, Camera::Speed, 0.0f));
+			}
+			if (InputManager::listContains(83)) {	//S
+				Camera::translateCamera(glm::vec3(0.0f, -Camera::Speed, 0.0f));
+			}
+			if (InputManager::listContains(65)) { //A
+				Camera::translateCamera(glm::vec3(-Camera::Speed, 0.0f, 0.0f));
+			}
+			if (InputManager::listContains(68)) { //D
+				Camera::translateCamera(glm::vec3(Camera::Speed, 0.0f, 0.0f));
+			}
 		}
 		//Stop Camera from leaving world boundaries during gameplay
 		if (Camera::camera_pos.x > 2.5f) {
@@ -156,12 +159,11 @@ void Game::update(float delta) {
 		}
 		//printf("Camera Pos = vec2(%f, %f)\n", Camera::camera_pos.x, Camera::camera_pos.y);
 	}
-	//If the camera should lock onto the player
-	if(Camera::PLAYER_LOCK == GL_TRUE) {
-		//Camera::setPosition(glm::vec3(player->getPos().x, player->getPos().y, 0.0f));
-	}
 
+
+	//Update Levels
 	Levels[Level]->update(delta);
+	//Update Menu
 	Menu->update(delta);
 
 	// Makes the camera move around the map at the main menu
@@ -187,12 +189,4 @@ void Game::update(float delta) {
 			Camera::setPosition(glm::vec3(Camera::camera_pos.x, 1.0f, 0.0f));
 		}
 	}
-
-	//Prevents the Camera from going off the map
-	/*if (Camera::camera_pos.x > 2.2f) {
-		Camera::setPosition(glm::vec3(2.2f, Camera::camera_pos.y, 0.0f));
-	}
-	else if (Camera::camera_pos.x < 1.0f) {
-		Camera::setPosition(glm::vec3(1.0f, Camera::camera_pos.y, 0.0f));
-	}*/
 }

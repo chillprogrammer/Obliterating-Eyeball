@@ -7,7 +7,7 @@ public:
 	Player(const char* img);
 	~Player();
 	void render();
+	void updatePlayer(float delta);
 private:
-	
 };
 #endif

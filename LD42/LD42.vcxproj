@@ -175,6 +175,8 @@
     <None Include="shaders\Eyeball.vs" />
     <None Include="shaders\Image_Shader.fs" />
     <None Include="shaders\Image_Shader.vs" />
+    <None Include="shaders\Player.fs" />
+    <None Include="shaders\Player.vs" />
     <None Include="shaders\Rect_Shader.fs" />
     <None Include="shaders\Rect_Shader.vs" />
     <None Include="shaders\Sprite_Shader.fs" />

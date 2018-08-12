@@ -4,7 +4,6 @@
 #include <glm/glm.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>
-
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
 #include <stdlib.h>

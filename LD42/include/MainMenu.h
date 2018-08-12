@@ -19,6 +19,8 @@ private:
 	SpriteRenderer* Sprite;
 	std::vector<Button*> Buttons;
 	GLFWwindow* window;
+	float eyeball_rotation;
+	glm::vec2 oblit_pos;
 
 	//The screen that pops up when you click the "How the Game Was Made" button.
 	struct Made_Menu {
@@ -30,7 +32,6 @@ private:
 		ObjectRenderer* Object;
 		TextRenderer* Text;
 	};
-
 	Made_Menu * Made;
 };
 #endif

@@ -17,9 +17,4 @@ void main()
     if(mouseHovering == 1.0f) {
         FragColor = vec4(inColor, 1.0)*img*vec4(0.2f, 0.2f, 0.2f, 1.0f);
     }
-
-    //if(detail > 0.0) {
-    //    FragColor = vec4(inColor, 1.0)*img*vec4(1.0f, 0.41f, 0.71f, 1.0f);
-    //}
-
 }

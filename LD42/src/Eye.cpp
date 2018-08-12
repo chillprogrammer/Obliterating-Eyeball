@@ -12,7 +12,15 @@ Eye::Eye(const char* img_path) : Entity(img_path) {
 	shader_caller = "Eyeball";
 	pupil_pos = glm::vec2(0.5f, 0.5f);
 	pupil_scale = glm::vec2(0.15f, 0.2f);
+	//velocity.x = 0.1f;
+	//velocity.y = -0.1f;
 }
 Eye::~Eye() {
+
+}
+void Eye::updateEye(float d) {
+
+}
+void Eye::render() {
 
 }

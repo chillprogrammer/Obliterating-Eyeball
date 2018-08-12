@@ -109,7 +109,7 @@ void ResourceManager::setUniformVec3(const char* caller, const glm::vec3 vector3
 		glUniform3fv(loc, 1, glm::value_ptr(vector3));
 	}
 	else {
-		printf("ERROR: Attempted pass an invalid uniform vec2 (%s) to ( shader:%s )\n", shader_var, caller);
+		printf("ERROR: Attempted pass an invalid uniform vec3 (%s) to ( shader:%s )\n", shader_var, caller);
 	}
 }
 void ResourceManager::setUniform1f(const char* caller, const GLfloat f, const char* shader_var) {

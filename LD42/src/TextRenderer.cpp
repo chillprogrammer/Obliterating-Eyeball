@@ -249,9 +249,9 @@ void TextRenderer::setAppropriateChar(const char ch) {
 	}
 }
 void TextRenderer::render(const std::string text, GLfloat posx, GLfloat posy, GLfloat scalex, GLfloat scaley, glm::vec3 color, GLfloat rotation) {
-	this->projection = glm::translate(glm::mat4(1), glm::vec3(posx + scalex * text.length() / 4.0f, posy, 0.0f));
+	this->projection = glm::translate(glm::mat4(1), glm::vec3(posx + scalex, posy - scaley/4, 0.0f));
 	this->projection = glm::rotate(projection, glm::radians(rotation), glm::vec3(0.0f, 0.0f, 1.0f));
-	this->projection = glm::translate(projection, glm::vec3(-scalex*text.length() /4.0f, 0.0f, 0.0f));
+	this->projection = glm::translate(projection, glm::vec3(-scalex, scaley/4, 0.0f));
 	glm::vec3 transform = glm::vec3(scalex/4.0f, 0.0f, 0.0f);
 	ResourceManager::bindTexture("Text");
 	ResourceManager::bindShader("Text");

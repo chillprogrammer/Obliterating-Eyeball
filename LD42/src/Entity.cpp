@@ -1,6 +1,6 @@
 #include "Entity.h"
 #include "ResourceManager.h"
-Entity::Entity(const GLchar* img_path) {
+Entity::Entity(const char* img_path) {
 	visible = true;
 	angle = 0.0f;
 	pos.x = 0.01f;
@@ -15,6 +15,9 @@ Entity::Entity(const GLchar* img_path) {
 		ResourceManager::loadTexture(img_path, img_path);
 	image = img_path;
 	shader_caller = "Image";
+	animation_frame = 0.0f;
+	total_animation_frames = 1.0f;
+	GRAVITY = -0.0025f;
 }
 Entity::~Entity() {
 	//printf("Testing Destruction of ENTITY\n");
@@ -47,7 +50,7 @@ glm::vec2 Entity::getScale() {
 	return scale;
 }
 GLfloat Entity::getAng() { return angle; }
-void Entity::update(GLfloat d) {
+void Entity::update(float d) {
 	delta = d;
 	translatePosition(velocity.x*delta, velocity.y*delta);
 }

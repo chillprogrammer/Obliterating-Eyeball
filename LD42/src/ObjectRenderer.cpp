@@ -103,14 +103,22 @@ void ObjectRenderer::render(Entity* ent) {
 	if (ent->visible) {
 		this->model = glm::translate(glm::mat4(1), glm::vec3(ent->getPos().x, ent->getPos().y, 0.0f));
 		this->model = glm::rotate(model, glm::radians(ent->getAng()), glm::vec3(0.0f, 0.0f, 1.0f));
-		ResourceManager::bindShader("Image");
 		glBindVertexArray(VAO);
-		ResourceManager::setUniformMat4("Image", Camera::Projection, "projection");
-		ResourceManager::setUniformMat4("Image", this->model, "model");
-		ResourceManager::setUniformVec3("Image", ent->color, "inColor");
-		ResourceManager::setUniform1f("Image", ent->alpha, "alpha");
-		ResourceManager::setUniform1f("Image", ent->getScale().x, "scalex");
-		ResourceManager::setUniform1f("Image", ent->getScale().y, "scaley");
+		ResourceManager::bindShader(ent->shader_caller.c_str());
+		if (ent->shader_caller == "Eyeball") {
+			ResourceManager::setUniformVec2(ent->shader_caller.c_str(), ent->pupil_pos, "pupil_pos");
+			ResourceManager::setUniformVec2(ent->shader_caller.c_str(), ent->pupil_scale, "pupil_scale");
+		}
+		if (ent->shader_caller == "Player") {
+			ResourceManager::setUniform1f(ent->shader_caller.c_str(), ent->animation_frame, "animation_frame");
+			ResourceManager::setUniform1f(ent->shader_caller.c_str(), ent->total_animation_frames, "total_animation_frames");
+		}
+		ResourceManager::setUniformMat4(ent->shader_caller.c_str(), Camera::Projection, "projection");
+		ResourceManager::setUniformMat4(ent->shader_caller.c_str(), this->model, "model");
+		ResourceManager::setUniformVec3(ent->shader_caller.c_str(), ent->color, "inColor");
+		ResourceManager::setUniform1f(ent->shader_caller.c_str(), ent->alpha, "alpha");
+		ResourceManager::setUniform1f(ent->shader_caller.c_str(), ent->getScale().x, "scalex");
+		ResourceManager::setUniform1f(ent->shader_caller.c_str(), ent->getScale().y, "scaley");
 		ResourceManager::bindTexture(ent->getImage());
 		ent->update(Camera::Delta);
 		ent->render();

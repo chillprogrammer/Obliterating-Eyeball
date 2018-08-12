@@ -30,7 +30,7 @@ MainMenu::MainMenu(GLFWwindow* driver) {
 			Buttons[i]->border_x = 0.025f;
 			break;
 		}
-		Buttons[i]->backColor = glm::vec3(0.70588f, 0.99216f, 0.737255f);
+		Buttons[i]->backColor = glm::vec3(0.40588f, 0.69216f, 0.437255f);
 		Buttons[i]->borderColor = glm::vec3(0.0f, 0.0f, 0.0f);
 		Buttons[i]->hoverColor = glm::vec3(0.5f, 0.5f, 0.5f);
 		Buttons[i]->textColor = glm::vec3(1.0f, 1.0f, 1.0f);
@@ -128,6 +128,26 @@ void MainMenu::render() {
 	//Render Game Title (Obliterate vibrates, and Eyeball rotates)
 	Text->render("Obliterating", oblit_pos.x, oblit_pos.y, 0.2f, 0.2*1.777f, glm::vec3(0.99f, 0.52549f, 0.04314f), 0.0f);
 	Text->render("Eyeball!", 0.20f, 0.8f, 0.2f, 0.2*1.777f, glm::vec3(1.0f, 1.0f, 1.0f), eyeball_rotation);
+
+	//If at Pause Menu, then display PAUSE
+	if (InputManager::State == PAUSED) {
+		static float paused_blink = 0.0f;
+		static bool color_toggle = true;
+		paused_blink += 1.0f*Camera::Delta;
+		static glm::vec3 pause_color = glm::vec3(1.0f, 0.9f, 0.9f);
+		if (paused_blink > 1.0f) {
+			if (color_toggle) {
+				pause_color = glm::vec3(1.0f, 0.2f, 0.2f);
+				color_toggle = false;
+			}
+			else {
+				pause_color = glm::vec3(1.0f, 0.9f, 0.9f);
+				color_toggle = true;
+			}
+			paused_blink = 0.0f;
+		}
+		Text->render("<Paused>", -0.20f, 0.5f, 0.2f, 0.2*1.777f, pause_color, 0.0f);
+	}
 
 	//Render Instructions
 	Text->render("Goal: Defeat the Eyeball.", -0.90f, -0.4f, 0.1f, 0.1*1.777f, glm::vec3(0.8f, 0.2f, 0.2f), 0.0f);

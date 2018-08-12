@@ -3,6 +3,9 @@
 #include <vector>
 #include "SpriteRenderer.h"
 #include "Camera.h"
+#include "ObjectRenderer.h"
+#include "Eye.h"
+#include "Player.h"
 
 class GameLevel {
 public:
@@ -16,5 +19,8 @@ private:
 	unsigned int Width, Height;
 	std::vector<std::vector<unsigned int>> Grid;
 	SpriteRenderer* Sprite;
+	ObjectRenderer* Object;
+	//Entities
+	Entity* Eyeball, *Guy;
 };
 #endif
