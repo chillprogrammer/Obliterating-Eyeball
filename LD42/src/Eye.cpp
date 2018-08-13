@@ -21,9 +21,10 @@ Eye::~Eye() {
 void Eye::updateEye(float d) {
 	if (InputManager::State == PLAYING) {
 		fire_counter += 1.0f*d;
-		if (fire_counter > 1.0f) {
+		if (fire_counter > 1.0f && attacking == false) {
 			attacking = true;
 			fire_counter = 0.0f;
+			SoundEngine::playSound("sounds/blast.wav", glm::vec2(0.0f, 0.0f), false);
 		}
 	}
 }

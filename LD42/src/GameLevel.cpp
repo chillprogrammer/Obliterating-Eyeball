@@ -222,6 +222,7 @@ void GameLevel::render() {
 			InputManager::State = DIED;
 			Camera::PLAYER_LOCK = false;
 			Eyeball->attacking = false;
+			SoundEngine::playSound("sounds/death.wav", glm::vec2(0.0f, 0.0f), false);
 			SoundEngine::stopSound("sounds/game-song.wav");
 			SoundEngine::playSound("sounds/menu-theme.wav", glm::vec2(0.0f, 0.0f), true);
 		}
