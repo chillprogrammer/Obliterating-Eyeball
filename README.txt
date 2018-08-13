@@ -4,4 +4,4 @@ A Windows Executable file can be found here:
 https://github.com/copetv/LD42/raw/master/LD42/Obliterating%20Eyeball.zip
 
 For Linux and Mac users:
-I'm sorry, but you will have to compile it yourself to play it.
+Have you tried Wine?
