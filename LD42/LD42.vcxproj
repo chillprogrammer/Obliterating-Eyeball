@@ -173,6 +173,7 @@
     <ClInclude Include="include\WaveFile.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Libraries\vcruntime140.dll" />
     <None Include="shaders\Eyeball.fs" />
     <None Include="shaders\Eyeball.vs" />
     <None Include="shaders\Image_Shader.fs" />

@@ -187,5 +187,6 @@
     <None Include="shaders\Player.fs">
       <Filter>shaders</Filter>
     </None>
+    <None Include="Libraries\vcruntime140.dll" />
   </ItemGroup>
 </Project>
