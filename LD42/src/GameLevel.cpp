@@ -287,6 +287,7 @@ void GameLevel::render() {
 							if (player_pos.y < ypos + scaley && (player_pos.x < xpos + scalex * 1.25 && player_pos.x > xpos - scalex * .25)) {
 								if (player_pos.y >= ypos) {
 									Guy->setPosition(player_pos.x, ypos + scaley);
+									Guy->setVelocity(Guy->getVelocity().x, 0.0f);
 									jumping = false;
 								}
 							}
